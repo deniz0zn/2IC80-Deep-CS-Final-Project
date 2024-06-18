@@ -1,0 +1,5 @@
+victim = 192.168.88.123
+router = 192.168.88.1
+
+username = admin
+password = 123456
