@@ -2,16 +2,17 @@ import subprocess
 import os
 
 class StreamRecorder:
-    def __init__(self, url, format='mkv', directory_path='Videos'):
+    def __init__(self, url, directory_path='Videos'):
         self.url = url
-        self.format = format
         self.directory_path = directory_path
+        if not os.path.exists(self.directory_path):
+            os.makedirs(self.directory_path)  # Ensure the directory exists
 
     def generate_unique_filename(self):
         """Generates a unique filename for the recording."""
         i = 1
         while True:
-            new_filename = f"output{i}.{self.format}"
+            new_filename = f"output{i}.mkv"  # Always use .mkv format
             output_path = os.path.join(self.directory_path, new_filename)
             if not os.path.exists(output_path):
                 return output_path
@@ -27,8 +28,7 @@ class StreamRecorder:
             '-i', self.url,
             '-c', 'copy',
             '-t', '60',  # Duration in seconds
-            '-f', self.format,  # Format of the output file
-            output_path
+            output_path  # Directly specify the output path with the .mkv extension
         ]
 
         try:
@@ -47,4 +47,3 @@ class StreamRecorder:
                 print("FFmpeg terminated with an error:", process.returncode)
             else:
                 print(f"Recording completed successfully, output saved to {output_path}")
-
