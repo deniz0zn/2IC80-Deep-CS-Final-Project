@@ -1,88 +1,91 @@
-# 2IC80-Deep-CS-Final-Project
+## Vulnerability Exploitations of a Wi-Fi Cloud Camera
 
-This toolkit provides utilities for ARP spoofing and network stream recording, designed for network security testing and educational purposes. The toolkit includes three main components: `main.py`, `arp_spoof.py`, and `record_stream.py`, which are managed through a simple text-based menu.
+This toolkit is designed to provide tools for network security testing and stream recording and processing, utilizing Python for various tasks including ARP spoofing, DOS attacks, and video stream recording and conversion.
 
 ### Features
 
 - **ARP Spoofing**: Manipulate ARP tables to intercept or alter network traffic between devices.
-- **Network Stream Recording**: Capture video streams using RTSP, storing the data securely for analysis.
+- **DOS Attacks**: Perform denial of service tests to evaluate network robustness.
+- **Stream Recording**: Capture RTSP video streams, storing them locally.
+- **Stream Processing**: Convert video files to different formats and manage video storage. This includes processing video files to optimize them for various playback scenarios.
 
 ### Prerequisites
 
-Before you install and run this toolkit, ensure you have the following installed:
-
 - Python 3.6 or higher
-- FFmpeg for handling video streams
+- FFmpeg (for stream recording and processing)
+- Scapy (for network manipulation tasks)
+- matplotlib (for plotting data in DOS attacks)
 
 ### Installation
 
-#### 1. Clone the repository
+1. **Clone the Repository**
 
-```bash
-git clone https://github.com/deniz0zn/2IC80-Deep-CS-Final-Project.git
-cd 2IC80-Deep-CS-Final-Project
-```
+    ```bash
+    git clone https://github.com/deniz0zn/2IC80-Deep-CS-Final-Project
+    cd 2IC80-Deep-CS-Final-Project
+    ```
 
-#### 2. Install Python dependencies
+2. **Install Python Dependencies**
 
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-#### 3. Install FFmpeg
+3. **FFmpeg Installation**
 
-**Linux:**
-```bash
-sudo apt update
-sudo apt install ffmpeg
-```
+    - **Ubuntu/Linux**:
 
-**macOS:**
-```bash
-brew install ffmpeg
-```
+      ```bash
+      sudo apt update
+      sudo apt install ffmpeg
+      ```
 
-**Windows:**
-- Download the builds from [FFmpeg Official Site](https://ffmpeg.org/download.html).
-- Add FFmpeg to your system path.
+    - **macOS** (using Homebrew):
 
-### Configuration
+      ```bash
+      brew install ffmpeg
+      ```
 
-Edit the `targets.txt` file to set up the target configurations:
-
-```plaintext
-victim = <VICTIM IP>
-router = <ROUTER IP>
-username = <USERNAME>
-password = <PASSWORD>
-```
-
-Ensure that the `targets.txt` file is in the same directory as the scripts or update the file path in `main.py` accordingly.
+    - **Windows**:
+      - Download the builds from [FFmpeg Official Site](https://ffmpeg.org/download.html).
+      - Add FFmpeg to your system path.
+      - [Video Guide for setting up FFmpeg](https://www.youtube.com/watch?v=r1AtmY-RMyQ)
 
 ### Usage
 
-Run the main script to start the menu-driven interface:
+1. **Running the Main Menu**
+    - Navigate to the project directory and run:
+      
+      ```bash
+      python main.py
+      ```
 
-```bash
-python main.py
-```
+    - Follow the on-screen prompts to select and execute tasks such as ARP spoofing, DOS attacks, stream recording, or stream processing.
 
-Follow the on-screen prompts to select either ARP spoofing or network recording. Use the menu to safely stop all activities and exit the program:
+2. **Using Stream Processing**
+    - The `process_stream.py` script can be used independently to convert and manage video files:
+      
+      ```bash
+      python process_stream.py --dir=<directory_with_videos> --cleanup
+      ```
 
-1. Run ARP Spoofing
-2. Run Network Recording
-3. Stop all tasks and Exit
+    - This script provides functionality to convert videos to MP4, remove unnecessary files, and reorganize video storage.
 
-### Contributing
-
-Contributions to this project are welcome. Please ensure to follow best practices for code changes and updates.
+3. **Configuration**
+    - Adjust settings like target IP addresses and credentials in the `targets.txt` file:
+      
+      ```plaintext
+      victim = <VICTIM IP>
+      router = <ROUTER IP>
+      username = <USERNAME>
+      password = <PASSWORD>
+      ```
 
 ### License
 
-This project is licensed under MIT License. For more details, see the LICENSE file.
+This project is licensed under MIT Licence. For more details, see the LICENSE file.
 
 ### Disclaimer
 
 This toolkit is for educational and ethical testing purposes only. Usage of this software for attacking targets without prior mutual consent is illegal. The developers assume no liability and are not responsible for any misuse or damage caused by this program.
 
----
