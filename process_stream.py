@@ -12,8 +12,8 @@ def save_as_video(data, output_file):
 
 
 def main():
-    raw_data_file = r'C:\Users\20210666\Desktop\Projects\Lab10\stream_data.raw'
-    output_video_file = r'C:\Users\20210666\Desktop\Projects\Lab10\output.h264'
+    raw_data_file = r''
+    output_video_file = r''
 
     # Read raw data from the file
     raw_data = read_raw_data(raw_data_file)
