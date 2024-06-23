@@ -1,5 +1,10 @@
 ## Vulnerability Exploitations of a Wi-Fi Cloud Camera
+**Deniz Ozen, Kuzey Hamidoglu, Arda Dinsoy**\
+_2IC80 - Lab on Offensive Computer Security, \
+Eindhoven University of Technology
+2023-2024_
 
+### About
 This toolkit is designed to provide tools for network security testing and stream recording and processing, utilizing Python for various tasks including ARP spoofing, DOS attacks, and video stream recording and conversion.
 
 ### Features
@@ -10,11 +15,13 @@ This toolkit is designed to provide tools for network security testing and strea
 - **Stream Processing**: Convert video files to different formats and manage video storage. This includes processing video files to optimize them for various playback scenarios.
 
 ### Prerequisites
-
+We recommend the installation of these packages to ensure an end-to-end process with no errors.
 - Python 3.6 or higher
 - FFmpeg (for stream recording and processing)
-- Scapy (for network manipulation tasks)
-- matplotlib (for plotting data in DOS attacks)
+```plaintext
+scapy==2.5.0
+matplotlib==3.9.0
+```
 
 ### Installation
 
@@ -88,4 +95,5 @@ This project is licensed under MIT Licence. For more details, see the LICENSE fi
 ### Disclaimer
 
 This toolkit is for educational and ethical testing purposes only. Usage of this software for attacking targets without prior mutual consent is illegal. The developers assume no liability and are not responsible for any misuse or damage caused by this program.
+
 
